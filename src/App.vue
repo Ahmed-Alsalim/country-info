@@ -1,8 +1,14 @@
 <script lang="ts">
 import type { Country, WorldBankResponse } from './types';
+import CountriesTable from './components/CountriesTable.vue';
+import DetailsDialog from './components/DetailsDialog.vue';
 
 export default {
   name: 'App',
+  components: {
+    CountriesTable,
+    DetailsDialog,
+  },
   data() {
     return {
       countries: [] as Country[],
@@ -61,39 +67,13 @@ export default {
 
     <v-main>
       <v-container>
-        <v-table class="table" fixed-header fixed-footer>
-          <thead>
-            <tr>
-              <th>iso Code</th>
-              <th>name</th>
-              <th>capitalCity</th>
-              <th>region</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr v-for="country in countries" :key="country.iso2Code" class="clickable-row" @click="openDialog(country)">
-              <td>{{ country.iso2Code }}</td>
-              <td>{{ country.name }}</td>
-              <td>{{ country.capitalCity }}</td>
-              <td>{{ country.region.value }}</td>
-            </tr>
-          </tbody>
-
-          <tfoot>
-            <tr class="table-footer">
-              <td colspan="100%">
-                <v-btn density="comfortable" icon :disabled="page === 1" @click="changePage(page - 1)">
-                  {{ '<' }}
-                </v-btn>
-                <span class="mx-2">Page {{ page }} of {{ totalPages }}</span>
-                <v-btn density="comfortable" icon :disabled="page === totalPages" @click="changePage(page + 1)">
-                  {{ '>' }}
-                </v-btn>
-              </td>
-            </tr>
-          </tfoot>
-        </v-table>
+        <CountriesTable
+          :countries="countries"
+          :page="page"
+          :totalPages="totalPages"
+          @changePage="changePage"
+          @openDialog="openDialog"
+        />
       </v-container>
     </v-main>
 
@@ -101,21 +81,4 @@ export default {
   </v-app>
 </template>
 
-<style lang="scss" scoped>
-.table {
-  height: calc(100vh - 96px);
-}
 
-.table-footer {
-  background-color: white;
-  text-align: center;
-}
-
-.clickable-row {
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-}
-</style>
