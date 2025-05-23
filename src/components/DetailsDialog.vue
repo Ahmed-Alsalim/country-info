@@ -72,6 +72,26 @@ export default {
               readonly
             />
           </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              :model-value="countryData.longitude || '-'"
+              label="Longitude"
+              variant="underlined"
+              dirty
+              hide-details
+              readonly
+            />
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              :model-value="countryData.latitude || '-'"
+              label="Latitude"
+              variant="underlined"
+              dirty
+              hide-details
+              readonly
+            />
+          </v-col>
         </v-row>
       </v-card-text>
     </v-card>

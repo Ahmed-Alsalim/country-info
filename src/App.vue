@@ -13,12 +13,16 @@ export default {
     return {
       countries: [] as Country[],
       loading: false,
-      error: null,
+      error: {
+        visible: false,
+        message: '',
+      },
       page: 1,
       totalPages: 0,
       totalRecords: 0,
       dialogVisible: false,
       dialogData: null as Country | null,
+      searchText: '',
     };
   },
   mounted() {
@@ -39,8 +43,9 @@ export default {
           this.totalPages = response[0].pages;
           this.totalRecords = response[0].total;
         })
-        .catch((error) => {
-          this.error = error;
+        .catch(() => {
+          this.error.visible = true;
+          this.error.message = 'Error fetching data';
         })
         .finally(() => {
           this.loading = false;
@@ -50,11 +55,36 @@ export default {
       if (this.loading) return;
 
       this.page = page;
-      this.fetchData();
+      this.fetchTableData();
     },
     openDialog(country: Country) {
       this.dialogVisible = true;
       this.dialogData = country;
+    },
+    search() {
+      if (!this.searchText) return;
+      if (this.searchText.length < 2 || this.searchText.length > 3) {
+        this.error.visible = true;
+        this.error.message = 'Country ISO code must be 2-3 letters only';
+
+        return;
+      }
+      this.fetchData(this.searchText)
+        .then((response: WorldBankResponse) => {
+          console.log(response);
+          if (response[1]?.length > 0) {
+            this.error.visible = false;
+            this.dialogData = response[1][0];
+            this.dialogVisible = true;
+          } else {
+            this.error.visible = true;
+            this.error.message = 'ISO code invalid, no data found';
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+          this.searchText = '';
+        });
     },
   },
 };
@@ -62,7 +92,29 @@ export default {
 
 <template>
   <v-app>
-    <v-app-bar title="countries" />
+    <v-toolbar>
+      <v-row align="center" class="px-4">
+        <v-col>
+          <v-app-bar-title>Countries</v-app-bar-title>
+        </v-col>
+
+        <v-col>
+          <v-text-field
+            v-model="searchText"
+            label="Search"
+            rounded="lg"
+            variant="solo"
+            append-inner-icon="mdi-magnify"
+            density="compact"
+            single-line
+            hide-details="auto"
+            @keydown.enter="search"
+            @click:append-inner="search"
+          />
+        </v-col>
+        <v-spacer />
+      </v-row>
+    </v-toolbar>
 
     <v-main>
       <v-container>
@@ -75,8 +127,9 @@ export default {
         />
       </v-container>
     </v-main>
+
     <DetailsDialog :visible="dialogVisible" :country-data="dialogData" @close="dialogVisible = false" />
+    
+    <v-snackbar v-model="error.visible" color="error" :timeout="3000" :text="error.message" />
   </v-app>
 </template>
-
-
