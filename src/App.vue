@@ -17,9 +17,9 @@ export default {
     await this.fetchData();
   },
   methods: {
-    async fetchData(countryCode: string = '', page: number = 1) {
-      this.loading = true
-      fetch(`https://api.worldbank.org/v2/country/${countryCode}?format=json&page=${page}`)
+    async fetchData(countryCode: string = '') {
+      this.loading = true;
+      fetch(`https://api.worldbank.org/v2/country/${countryCode}?format=json&page=${this.page}`)
         .then((res) => res.json())
         .then((response: WorldBankResponse) => {
           this.countries = response[1];
@@ -32,6 +32,12 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    changePage(page: number) {
+      if (this.loading) return;
+
+      this.page = page;
+      this.fetchData();
     },
   },
 };
@@ -61,6 +67,16 @@ export default {
               <td>{{ country.region.value }}</td>
             </tr>
           </tbody>
+
+          <tfoot>
+            <tr class="table-footer">
+              <td colspan="100%">
+                <v-btn density="comfortable" icon :disabled="page === 1" @click="changePage(page - 1)"> {{ '<' }} </v-btn>
+                <span class="mx-2">Page {{ page }} of {{ totalPages }}</span>
+                <v-btn density="comfortable" icon :disabled="page === totalPages" @click="changePage(page + 1)"> {{ '>' }} </v-btn>
+              </td>
+            </tr>
+          </tfoot>
         </v-table>
       </v-container>
     </v-main>
@@ -70,5 +86,10 @@ export default {
 <style scoped>
 .table {
   height: calc(100vh - 96px);
+}
+
+.table-footer {
+  background-color: white;
+  text-align: center;
 }
 </style>
