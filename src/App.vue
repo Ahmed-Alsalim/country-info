@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Country, WorldBankResponse } from './types'
+import type { Country, WorldBankResponse } from './types';
 
 export default {
   name: 'App',
@@ -11,10 +11,10 @@ export default {
       page: 1,
       totalPages: 0,
       totalRecords: 0,
-    }
+    };
   },
   async mounted() {
-    await this.fetchData()
+    await this.fetchData();
   },
   methods: {
     async fetchData(countryCode: string = '', page: number = 1) {
@@ -22,19 +22,19 @@ export default {
       fetch(`https://api.worldbank.org/v2/country/${countryCode}?format=json&page=${page}`)
         .then((res) => res.json())
         .then((response: WorldBankResponse) => {
-          this.countries = response[1]
-          this.totalPages = response[0].pages
-          this.totalRecords = response[0].total
+          this.countries = response[1];
+          this.totalPages = response[0].pages;
+          this.totalRecords = response[0].total;
         })
         .catch((error) => {
-          this.error = error
+          this.error = error;
         })
         .finally(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
     },
   },
-}
+};
 </script>
 
 <template>
