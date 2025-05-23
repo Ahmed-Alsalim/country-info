@@ -96,11 +96,11 @@ export default {
   <v-app>
     <v-toolbar>
       <v-row align="center" class="px-4">
-        <v-col>
+        <v-col cols="4">
           <v-app-bar-title>Countries</v-app-bar-title>
         </v-col>
 
-        <v-col>
+        <v-col cols="8" sm="4">
           <v-text-field
             v-model="searchText"
             :loading="isSearchLoading"

@@ -38,10 +38,10 @@ export default {
   <v-table class="table" fixed-header fixed-footer>
     <thead>
       <tr>
-        <th>iso Code</th>
-        <th>name</th>
-        <th>capitalCity</th>
-        <th>region</th>
+        <th>ISO Code</th>
+        <th>Name</th>
+        <th>Capital City</th>
+        <th>Region</th>
       </tr>
     </thead>
 
@@ -62,12 +62,10 @@ export default {
     <tfoot>
       <tr class="table-footer">
         <td colspan="100%">
-          <v-btn density="comfortable" icon :disabled="page === 1" @click="changePage(page - 1)">
-            {{ '<' }}
+          <v-btn density="comfortable" icon="mdi-chevron-left" :disabled="page === 1" @click="changePage(page - 1)">
           </v-btn>
           <span class="mx-2">Page {{ page }} of {{ totalPages }}</span>
-          <v-btn density="comfortable" icon :disabled="page === totalPages" @click="changePage(page + 1)">
-            {{ '>' }}
+          <v-btn density="comfortable" icon="mdi-chevron-right" :disabled="page === totalPages" @click="changePage(page + 1)">
           </v-btn>
         </td>
       </tr>
