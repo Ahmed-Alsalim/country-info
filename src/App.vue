@@ -104,7 +104,7 @@ export default {
           <v-text-field
             v-model="searchText"
             :loading="isSearchLoading"
-            label="Search"
+            placeholder="ISO code"
             rounded="lg"
             variant="solo"
             append-inner-icon="mdi-magnify"
