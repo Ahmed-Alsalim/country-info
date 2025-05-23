@@ -10,6 +10,10 @@ export default {
       type: Array as PropType<Country[]>,
       required: true,
     },
+    isLoading: {
+      type: Boolean,
+      required: true,
+    },
     page: {
       type: Number,
       required: true,
@@ -42,7 +46,12 @@ export default {
     </thead>
 
     <tbody>
-      <tr v-for="country in countries" :key="country.iso2Code" class="clickable-row" @click="openDialog(country)">
+      <tr v-if="isLoading">
+        <td colspan="100%">
+          <v-skeleton-loader type="table-row@10" height="80vh" />
+        </td>
+      </tr> 
+      <tr v-else v-for="country in countries" :key="country.iso2Code" class="clickable-row" @click="openDialog(country)">
         <td>{{ country.iso2Code }}</td>
         <td>{{ country.name }}</td>
         <td>{{ country.capitalCity }}</td>

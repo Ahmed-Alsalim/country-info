@@ -27,7 +27,7 @@ export default {
   <v-dialog :model-value="visible" @update:model-value="closeDialog" width="600">
     <v-card>
       <v-card-title>
-        <span class="text-h6">Country Details</span>
+        Country Details
       </v-card-title>
 
       <v-card-text>
@@ -97,5 +97,3 @@ export default {
     </v-card>
   </v-dialog>
 </template>
-
-<style></style>

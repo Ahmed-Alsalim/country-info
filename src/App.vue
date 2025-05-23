@@ -12,7 +12,8 @@ export default {
   data() {
     return {
       countries: [] as Country[],
-      loading: false,
+      isTableDataLoading: false,
+      isSearchLoading: false,
       error: {
         visible: false,
         message: '',
@@ -36,7 +37,7 @@ export default {
       return fetch(url).then((res) => res.json());
     },
     async fetchTableData() {
-      this.loading = true;
+      this.isTableDataLoading = true;
       this.fetchData()
         .then((response: WorldBankResponse) => {
           this.countries = response[1];
@@ -48,11 +49,11 @@ export default {
           this.error.message = 'Error fetching data';
         })
         .finally(() => {
-          this.loading = false;
+          this.isTableDataLoading = false;
         });
     },
     changePage(page: number) {
-      if (this.loading) return;
+      if (this.isTableDataLoading) return;
 
       this.page = page;
       this.fetchTableData();
@@ -65,13 +66,14 @@ export default {
       if (!this.searchText) return;
       if (this.searchText.length < 2 || this.searchText.length > 3) {
         this.error.visible = true;
-        this.error.message = 'Country ISO code must be 2-3 letters only';
+        this.error.message = 'Country ISO code must be 2-3 characters';
 
         return;
       }
+
+        this.isSearchLoading = true;
       this.fetchData(this.searchText)
         .then((response: WorldBankResponse) => {
-          console.log(response);
           if (response[1]?.length > 0) {
             this.error.visible = false;
             this.dialogData = response[1][0];
@@ -82,7 +84,7 @@ export default {
           }
         })
         .finally(() => {
-          this.loading = false;
+          this.isSearchLoading = false;
           this.searchText = '';
         });
     },
@@ -101,6 +103,7 @@ export default {
         <v-col>
           <v-text-field
             v-model="searchText"
+            :loading="isSearchLoading"
             label="Search"
             rounded="lg"
             variant="solo"
@@ -122,6 +125,7 @@ export default {
           :countries="countries"
           :page="page"
           :totalPages="totalPages"
+          :isLoading="isTableDataLoading"
           @changePage="changePage"
           @openDialog="openDialog"
         />
