@@ -10,19 +10,13 @@ export default {
       type: Boolean,
       required: true,
     },
-    data: {
+    countryData: {
       type: Object as PropType<Country>,
       required: true,
     },
   },
-  data() {
-    return {
-      dialogVisible: this.visible,
-    };
-  },
   methods: {
     closeDialog() {
-      this.dialogVisible = false;
       this.$emit('close');
     },
   },
@@ -30,7 +24,7 @@ export default {
 </script>
 
 <template>
-  <v-dialog v-model="dialogVisible" width="500">
+  <v-dialog :model-value="visible" @update:model-value="closeDialog" width="600">
     <v-card>
       <v-card-title>
         <span class="text-h6">Country Details</span>
@@ -38,11 +32,45 @@ export default {
 
       <v-card-text>
         <v-row>
-          <v-col cols="12" sm="6">
-            <v-text-field label="Country Code" v-model="dialogData.iso2Code" readonly />
+          <v-col cols="12" sm="3">
+            <v-text-field
+              :model-value="countryData.iso2Code || '-'"
+              label="ISO Code"
+              variant="underlined"
+              dirty
+              hide-details
+              readonly
+            />
+          </v-col>
+          <v-col cols="12" sm="9">
+            <v-text-field
+              :model-value="countryData.name || '-'"
+              label="Name"
+              variant="underlined"
+              dirty
+              hide-details
+              readonly
+            />
           </v-col>
           <v-col cols="12" sm="6">
-            <v-text-field label="Country Name" v-model="dialogData.name" readonly />
+            <v-text-field
+              :model-value="countryData.capitalCity || '-'"
+              label="Capital City"
+              variant="underlined"
+              dirty
+              hide-details
+              readonly
+            />
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              :model-value="countryData.region.value || '-'"
+              label="Region"
+              variant="underlined"
+              dirty
+              hide-details
+              readonly
+            />
           </v-col>
         </v-row>
       </v-card-text>

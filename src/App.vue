@@ -35,7 +35,6 @@ export default {
       this.loading = true;
       this.fetchData()
         .then((response: WorldBankResponse) => {
-          console.log(response);
           this.countries = response[1];
           this.totalPages = response[0].pages;
           this.totalRecords = response[0].total;
@@ -76,8 +75,7 @@ export default {
         />
       </v-container>
     </v-main>
-
-    <DetailsDialog :visible="dialogVisible" :data="dialogData" @close="dialogVisible = false" />
+    <DetailsDialog :visible="dialogVisible" :country-data="dialogData" @close="dialogVisible = false" />
   </v-app>
 </template>
 
