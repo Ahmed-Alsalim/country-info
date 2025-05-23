@@ -11,17 +11,25 @@ export default {
       page: 1,
       totalPages: 0,
       totalRecords: 0,
+      dialogVisible: false,
+      dialogData: null as Country | null,
     };
   },
-  async mounted() {
-    await this.fetchData();
+  mounted() {
+    this.fetchTableData();
   },
   methods: {
     async fetchData(countryCode: string = '') {
+      let url = `https://api.worldbank.org/v2/country/${countryCode}?format=json`;
+      if (!countryCode) url += `&page=${this.page}`;
+
+      return fetch(url).then((res) => res.json());
+    },
+    async fetchTableData() {
       this.loading = true;
-      fetch(`https://api.worldbank.org/v2/country/${countryCode}?format=json&page=${this.page}`)
-        .then((res) => res.json())
+      this.fetchData()
         .then((response: WorldBankResponse) => {
+          console.log(response);
           this.countries = response[1];
           this.totalPages = response[0].pages;
           this.totalRecords = response[0].total;
@@ -38,6 +46,10 @@ export default {
 
       this.page = page;
       this.fetchData();
+    },
+    openDialog(country: Country) {
+      this.dialogVisible = true;
+      this.dialogData = country;
     },
   },
 };
@@ -60,7 +72,7 @@ export default {
           </thead>
 
           <tbody>
-            <tr v-for="country in countries" :key="country.iso2Code">
+            <tr v-for="country in countries" :key="country.iso2Code" class="clickable-row" @click="openDialog(country)">
               <td>{{ country.iso2Code }}</td>
               <td>{{ country.name }}</td>
               <td>{{ country.capitalCity }}</td>
@@ -71,19 +83,25 @@ export default {
           <tfoot>
             <tr class="table-footer">
               <td colspan="100%">
-                <v-btn density="comfortable" icon :disabled="page === 1" @click="changePage(page - 1)"> {{ '<' }} </v-btn>
+                <v-btn density="comfortable" icon :disabled="page === 1" @click="changePage(page - 1)">
+                  {{ '<' }}
+                </v-btn>
                 <span class="mx-2">Page {{ page }} of {{ totalPages }}</span>
-                <v-btn density="comfortable" icon :disabled="page === totalPages" @click="changePage(page + 1)"> {{ '>' }} </v-btn>
+                <v-btn density="comfortable" icon :disabled="page === totalPages" @click="changePage(page + 1)">
+                  {{ '>' }}
+                </v-btn>
               </td>
             </tr>
           </tfoot>
         </v-table>
       </v-container>
     </v-main>
+
+    <DetailsDialog :visible="dialogVisible" :data="dialogData" @close="dialogVisible = false" />
   </v-app>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .table {
   height: calc(100vh - 96px);
 }
@@ -91,5 +109,13 @@ export default {
 .table-footer {
   background-color: white;
   text-align: center;
+}
+
+.clickable-row {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 }
 </style>
