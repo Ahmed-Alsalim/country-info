@@ -9,6 +9,9 @@ describe('CountriesTable', () => {
     global.fetch = vi.fn();
   });
 
+  const countryArray = mockData.tableData[1] as Country[];
+  const mockCountry: Country = countryArray[0];
+
   it('emits changePage event with correct page number', () => {
     const wrapper = mount(CountriesTable);
 
@@ -19,9 +22,6 @@ describe('CountriesTable', () => {
 
   it('emits openDialog event with correct country data', () => {
     const wrapper = mount(CountriesTable);
-
-    const countryArray = mockData.tableData[1] as Country[];
-    const mockCountry: Country = countryArray[0];
 
     wrapper.vm.openDialog(mockCountry);
     expect(wrapper.emitted('openDialog')).toBeTruthy();
@@ -49,11 +49,26 @@ describe('CountriesTable', () => {
       },
     });
     const firstIso2CodeCell = wrapper.find('.clickable-row td:nth-child(1)');
-    const countryArray = mockData.tableData[1] as Country[];
-    const mockCountry: Country = countryArray[0];
 
     expect(wrapper.find('v-skeleton-loader').exists()).toBe(false);
     expect(wrapper.find('.clickable-row').exists()).toBe(true);
     expect(firstIso2CodeCell.text()).toBe(mockCountry.iso2Code);
+  });
+
+  it('handles click on row to open dialog', () => {
+    const wrapper = mount(CountriesTable, {
+      props: {
+        countries: mockData.tableData[1] as Country[],
+        isLoading: false,
+        page: 1,
+        totalPages: 2,
+      },
+    });
+
+    const firstRow = wrapper.find('.clickable-row:first-of-type');
+    firstRow.trigger('click');
+
+    expect(wrapper.emitted('openDialog')).toBeTruthy();
+    expect(wrapper.emitted('openDialog')?.[0]).toEqual([mockCountry]);
   });
 });
