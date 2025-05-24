@@ -33,5 +33,6 @@ export type WorldBankResponse = [
     per_page: string;
     total: number;
   },
-  Country[],
+  // only on success
+  Country[]?,
 ];

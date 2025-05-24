@@ -64,7 +64,7 @@ export default {
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
-              :model-value="countryData.region.value || '-'"
+              :model-value="countryData.region?.value || '-'"
               label="Region"
               variant="underlined"
               dirty

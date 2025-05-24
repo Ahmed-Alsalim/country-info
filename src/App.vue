@@ -22,7 +22,7 @@ export default {
       totalPages: 0,
       totalRecords: 0,
       dialogVisible: false,
-      dialogData: null as Country | null,
+      dialogData: {} as Country | null,
       searchText: '',
     };
   },
