@@ -71,13 +71,12 @@ export default {
         return;
       }
 
-        this.isSearchLoading = true;
+      this.isSearchLoading = true;
       this.fetchData(this.searchText)
         .then((response: WorldBankResponse) => {
           if (response[1]?.length > 0) {
             this.error.visible = false;
-            this.dialogData = response[1][0];
-            this.dialogVisible = true;
+            this.openDialog(response[1][0]);
           } else {
             this.error.visible = true;
             this.error.message = 'ISO code invalid, no data found';
@@ -133,7 +132,7 @@ export default {
     </v-main>
 
     <DetailsDialog :visible="dialogVisible" :country-data="dialogData" @close="dialogVisible = false" />
-    
+
     <v-snackbar v-model="error.visible" color="error" :timeout="3000" :text="error.message" />
   </v-app>
 </template>

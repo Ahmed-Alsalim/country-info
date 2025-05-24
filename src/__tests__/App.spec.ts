@@ -59,6 +59,7 @@ describe('App', () => {
   it('performs a valid search and displays the correct data', async () => {
     const mockSearchResponse = mockData.searchData as WorldBankResponse;
     const wrapper = await mountedWrapper();
+    const openDialogSpy = vi.spyOn(wrapper.vm, 'openDialog');
 
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       json: () => Promise.resolve(mockSearchResponse),
@@ -75,9 +76,10 @@ describe('App', () => {
     await flushPromises();
 
     expect(wrapper.vm.isSearchLoading, 'Search finished loading').toBe(false);
+    expect(openDialogSpy).toHaveBeenCalledWith(mockSearchResponse[1]?.[0]);
     expect(wrapper.vm.dialogData, 'Dialog data is loaded').toEqual(mockSearchResponse[1]?.[0]);
     expect(wrapper.vm.error.visible, 'Error is not visible').toBe(false);
-
+    
     expect(wrapper.find('v-dialog').exists(), 'Vuetify dialog is rendered in the DOM').toBe(true);
 
     const detailsDialog = wrapper.findComponent({ name: 'DetailsDialog' });
