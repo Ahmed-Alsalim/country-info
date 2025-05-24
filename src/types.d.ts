@@ -12,13 +12,13 @@ export type Country = {
     value: string;
   };
   iso2Code: string;
-  latitude: number;
+  latitude: string;
   lendingType: {
     id: string;
     iso2code: string;
     value: string;
   };
-  longitude: number;
+  longitude: string;
   name: string;
   region: {
     id: string;
@@ -30,7 +30,7 @@ export type WorldBankResponse = [
   {
     page: number;
     pages: number;
-    per_page: number;
+    per_page: string;
     total: number;
   },
   Country[],
