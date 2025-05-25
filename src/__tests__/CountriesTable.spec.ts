@@ -31,7 +31,10 @@ describe('CountriesTable', () => {
   it('handles loading state to show skeleton loader', () => {
     const wrapper = mount(CountriesTable, {
       props: {
+        countries: countryArray,
         isLoading: true,
+        page: 1,
+        totalPages: 1,
       },
     });
 
@@ -42,7 +45,7 @@ describe('CountriesTable', () => {
   it('shows correct data in table', () => {
     const wrapper = mount(CountriesTable, {
       props: {
-        countries: mockData.tableData[1] as Country[],
+        countries: countryArray,
         isLoading: false,
         page: 1,
         totalPages: 2,
@@ -58,7 +61,7 @@ describe('CountriesTable', () => {
   it('handles click on row to open dialog', () => {
     const wrapper = mount(CountriesTable, {
       props: {
-        countries: mockData.tableData[1] as Country[],
+        countries: countryArray,
         isLoading: false,
         page: 1,
         totalPages: 2,

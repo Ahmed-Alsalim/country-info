@@ -40,7 +40,7 @@ export default {
       this.isTableDataLoading = true;
       this.fetchData()
         .then((response: WorldBankResponse) => {
-          this.countries = response[1];
+          this.countries = response[1] || [];
           this.totalPages = response[0].pages;
           this.totalRecords = response[0].total;
         })
@@ -74,7 +74,7 @@ export default {
       this.isSearchLoading = true;
       this.fetchData(this.searchText)
         .then((response: WorldBankResponse) => {
-          if (response[1]?.length > 0) {
+          if (response[1] && response[1].length > 0) {
             this.error.visible = false;
             this.openDialog(response[1][0]);
           } else {
@@ -131,7 +131,7 @@ export default {
       </v-container>
     </v-main>
 
-    <DetailsDialog :visible="dialogVisible" :country-data="dialogData" @close="dialogVisible = false" />
+    <DetailsDialog :visible="dialogVisible" :country-data="dialogData!" @close="dialogVisible = false" />
 
     <v-snackbar v-model="error.visible" color="error" :timeout="3000" :text="error.message" />
   </v-app>
