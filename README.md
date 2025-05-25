@@ -2,6 +2,8 @@
 
 A Vue.js v3 application that provides detailed information about countries around the world.
 
+[You can preview the project here](https://ahmed-country-info.netlify.app/)
+
 ## Features
 - List countries from around the world.
 - View detailed information about each country.
