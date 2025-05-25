@@ -27,9 +27,7 @@ export default {
 <template>
   <v-dialog :model-value="visible" width="600" scrollable @update:model-value="closeDialog">
     <v-card>
-      <v-card-title>
-        Country Details
-      </v-card-title>
+      <v-card-title> Country Details </v-card-title>
 
       <v-card-text>
         <v-row>

@@ -79,7 +79,7 @@ describe('App', () => {
     expect(openDialogSpy).toHaveBeenCalledWith(mockSearchResponse[1]?.[0]);
     expect(wrapper.vm.dialogData, 'Dialog data is loaded').toEqual(mockSearchResponse[1]?.[0]);
     expect(wrapper.vm.error.visible, 'Error is not visible').toBe(false);
-    
+
     expect(wrapper.find('v-dialog').exists(), 'Vuetify dialog is rendered in the DOM').toBe(true);
 
     const detailsDialog = wrapper.findComponent({ name: 'DetailsDialog' });

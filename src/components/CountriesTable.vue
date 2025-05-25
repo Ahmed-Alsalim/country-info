@@ -50,8 +50,14 @@ export default {
         <td colspan="100%">
           <v-skeleton-loader type="table-row@10" height="80vh" />
         </td>
-      </tr> 
-      <tr v-else v-for="country in countries" :key="country.iso2Code" class="clickable-row" @click="openDialog(country)">
+      </tr>
+      <tr
+        v-else
+        v-for="country in countries"
+        :key="country.iso2Code"
+        class="clickable-row"
+        @click="openDialog(country)"
+      >
         <td>{{ country.iso2Code }}</td>
         <td>{{ country.name }}</td>
         <td>{{ country.capitalCity }}</td>
@@ -65,7 +71,12 @@ export default {
           <v-btn density="comfortable" icon="mdi-chevron-left" :disabled="page === 1" @click="changePage(page - 1)">
           </v-btn>
           <span class="mx-2">Page {{ page }} of {{ totalPages }}</span>
-          <v-btn density="comfortable" icon="mdi-chevron-right" :disabled="page === totalPages" @click="changePage(page + 1)">
+          <v-btn
+            density="comfortable"
+            icon="mdi-chevron-right"
+            :disabled="page === totalPages"
+            @click="changePage(page + 1)"
+          >
           </v-btn>
         </td>
       </tr>
