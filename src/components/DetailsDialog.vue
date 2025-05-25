@@ -1,9 +1,10 @@
 <script lang="ts">
 import type { Country } from '../types';
 import type { PropType } from 'vue';
-
+import MapWrapper from './MapWrapper.vue';
 export default {
   name: 'DetailsDialog',
+  components: { MapWrapper },
   emits: ['close'],
   props: {
     visible: {
@@ -24,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <v-dialog :model-value="visible" @update:model-value="closeDialog" width="600">
+  <v-dialog :model-value="visible" width="600" scrollable @update:model-value="closeDialog">
     <v-card>
       <v-card-title>
         Country Details
@@ -92,8 +93,14 @@ export default {
               readonly
             />
           </v-col>
+          <v-col v-if="countryData.latitude && countryData.longitude" cols="12">
+            <MapWrapper :latitude="countryData.latitude" :longitude="countryData.longitude" />
+          </v-col>
         </v-row>
       </v-card-text>
+      <v-card-actions class="px-6">
+        <v-btn variant="tonal" block @click="closeDialog"> Close </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
